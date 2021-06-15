@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export DEFORMER_PROJECT_DIR=/home/michael/deformer_private
+export DEFORMER_EXPERIMENTS_DIR=/home/michael/deformer_experiments
