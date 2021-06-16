@@ -2,7 +2,7 @@
 
 This is the repository for the paper:
 
->[Michael A. Alcorn](https://sites.google.com/view/michaelaalcorn) and [Anh Nguyen](http://anhnguyen.me). [The DEformer: An Order-Agnostic Distribution Estimating Transformer](https://arxiv.org/abs/2106.06989). arXiv. 2021.
+>[Michael A. Alcorn](https://sites.google.com/view/michaelaalcorn) and [Anh Nguyen](http://anhnguyen.me). [The DEformer: An Order-Agnostic Distribution Estimating Transformer](https://arxiv.org/abs/2106.06989). ICML Workshop on Invertible Neural Networks, Normalizing Flows, and Explicit Likelihood Models (INNF+). 2021.
 
 | <img src="deformer.svg" width="400"> |
 |:--|
@@ -24,7 +24,7 @@ If you use this code for your own research, please cite:
 @article{alcorn2021deformer,
    title={The DEformer: An Order-Agnostic Distribution Estimating Transformer},
    author={Alcorn, Michael A. and Nguyen, Anh},
-   journal={arXiv preprint arXiv:2106.06989},
+   journal={ICML Workshop on Invertible Neural Networks, Normalizing Flows, and Explicit Likelihood Models (INNF+).},
    year={2021}
 }
 ```
