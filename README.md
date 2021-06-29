@@ -24,7 +24,7 @@ If you use this code for your own research, please cite:
 @article{alcorn2021deformer,
    title={The DEformer: An Order-Agnostic Distribution Estimating Transformer},
    author={Alcorn, Michael A. and Nguyen, Anh},
-   journal={ICML Workshop on Invertible Neural Networks, Normalizing Flows, and Explicit Likelihood Models (INNF+).},
+   journal={ICML Workshop on Invertible Neural Networks, Normalizing Flows, and Explicit Likelihood Models (INNF+)},
    year={2021}
 }
 ```
