@@ -61,7 +61,7 @@ echo ${DEFORMER_PROJECT_DIR}
 
 should print the path you set for `DEFORMER_PROJECT_DIR` in `.deformer_profile`.
 
-### Running the training script
+### Running the binarized-MNIST training script
 
 Run (or copy and paste) the following script, editing the variables as appropriate.
 
@@ -91,4 +91,38 @@ mv ${JOB}.yaml ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/
 gpu=0
 cd ${DEFORMER_PROJECT_DIR}
 nohup python3 train_deformer.py ${JOB} ${gpu} > ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/train.log &
+```
+
+### Running the POWER training script
+
+Run (or copy and paste) the following script, editing the variables as appropriate.
+
+```bash
+#!/usr/bin/env bash
+
+JOB=$(date +%Y%m%d%H%M%S)
+
+echo "train:" >> ${JOB}.yaml
+echo "  dataset: power" >> ${JOB}.yaml  # "gas" or "power".
+echo "  batch_size: 128" >> ${JOB}.yaml
+echo "  workers: 10" >> ${JOB}.yaml
+echo "  learning_rate: 1.0e-5" >> ${JOB}.yaml
+echo "  patience: 20" >> ${JOB}.yaml
+
+echo "model:" >> ${JOB}.yaml
+echo "  idx_embed_dim: 20" >> ${JOB}.yaml
+echo "  mix_comps: 150" >> ${JOB}.yaml
+echo "  mlp_layers: [128, 256, 512]" >> ${JOB}.yaml
+echo "  nhead: 8" >> ${JOB}.yaml
+echo "  dim_feedforward: 2048" >> ${JOB}.yaml
+echo "  num_layers: 6" >> ${JOB}.yaml
+echo "  dropout: 0.2" >> ${JOB}.yaml
+
+# Save experiment settings.
+mkdir -p ${DEFORMER_EXPERIMENTS_DIR}/${JOB}
+mv ${JOB}.yaml ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/
+
+gpu=0
+cd ${DEFORMER_PROJECT_DIR}
+nohup python3 train_deformer_tabular.py ${JOB} ${gpu} > ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/train.log &
 ```
