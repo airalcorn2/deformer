@@ -126,3 +126,40 @@ gpu=0
 cd ${DEFORMER_PROJECT_DIR}
 nohup python3 train_deformer_tabular.py ${JOB} ${gpu} > ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/train.log &
 ```
+
+### Running the POWER ARDM training script
+
+Run (or copy and paste) the following script, editing the variables as appropriate.
+This script trains an order-agnostic DEformer similar to the order-agnostic Transformer described in Appendix D of "[Autoregressive Diffusion Models](https://arxiv.org/abs/2110.02037)".
+The only difference between this model and the original DEformer is that each input in the sequence consists of the concatenation of the column embedding for the value being predicted with the position embedding and value for the previous column in the shuffled sequence, i.e., the length of the input sequence is no longer double the number of columns.
+This model achieves a negative log-likelihood of -0.62 (compared to -0.68 for the original DEformer).
+
+```bash
+#!/usr/bin/env bash
+
+JOB=$(date +%Y%m%d%H%M%S)
+
+echo "train:" >> ${JOB}.yaml
+echo "  dataset: power" >> ${JOB}.yaml  # "gas" or "power".
+echo "  batch_size: 128" >> ${JOB}.yaml
+echo "  workers: 10" >> ${JOB}.yaml
+echo "  learning_rate: 1.0e-5" >> ${JOB}.yaml
+echo "  patience: 20" >> ${JOB}.yaml
+
+echo "model:" >> ${JOB}.yaml
+echo "  idx_embed_dim: 20" >> ${JOB}.yaml
+echo "  mix_comps: 150" >> ${JOB}.yaml
+echo "  mlp_layers: [128, 256, 512]" >> ${JOB}.yaml
+echo "  nhead: 8" >> ${JOB}.yaml
+echo "  dim_feedforward: 2048" >> ${JOB}.yaml
+echo "  num_layers: 6" >> ${JOB}.yaml
+echo "  dropout: 0.2" >> ${JOB}.yaml
+
+# Save experiment settings.
+mkdir -p ${DEFORMER_EXPERIMENTS_DIR}/${JOB}
+mv ${JOB}.yaml ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/
+
+gpu=0
+cd ${DEFORMER_PROJECT_DIR}
+nohup python3 train_deformer_tabular_ardm.py ${JOB} ${gpu} > ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/train.log &
+```
