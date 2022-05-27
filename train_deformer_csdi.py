@@ -50,8 +50,9 @@ def train_model():
             n_valid = 0
             for (batch_idx, valid_tensors) in enumerate(valid_loader):
                 loss = get_loss(model, valid_tensors, device)
-                total_valid_loss += loss.item()
-                n_valid += 1
+                n_unobs = len(valid_tensors["unobs_vals"])
+                total_valid_loss += loss.item() * n_unobs
+                n_valid += n_unobs
 
             total_valid_loss /= n_valid
 
@@ -65,8 +66,9 @@ def train_model():
                 n_test = 0
                 for (batch_idx, test_tensors) in enumerate(test_loader):
                     loss = get_loss(model, test_tensors, device)
-                    test_loss_best_valid += loss.item()
-                    n_test += 1
+                    n_unobs = len(test_tensors["unobs_vals"])
+                    test_loss_best_valid += loss.item() * n_unobs
+                    n_test += n_unobs
 
             test_loss_best_valid /= n_test
 
@@ -93,14 +95,15 @@ def train_model():
                 print(batch_idx, flush=True)
 
             optimizer.zero_grad()
+            n_unobs = len(train_tensors["unobs_vals"])
             loss = get_loss(model, train_tensors, device)
             if torch.isnan(loss):
                 raise ValueError
 
-            total_train_loss += loss.item()
+            total_train_loss += loss.item() * n_unobs
             loss.backward()
             optimizer.step()
-            n_train += 1
+            n_train += n_unobs
 
         epoch_time = time.time() - start_time
 
