@@ -163,3 +163,25 @@ gpu=0
 cd ${DEFORMER_PROJECT_DIR}
 nohup python3 train_deformer_tabular_ardm.py ${JOB} ${gpu} > ${DEFORMER_EXPERIMENTS_DIR}/${JOB}/train.log &
 ```
+
+### Running the CSDI training script
+
+Run (or copy and paste) the following script.
+This script trains a DEformer-like model (hereafter "DEformer-CSDI") on the imputation task described in "[CSDI: Conditional Score-based Diffusion Models for Probabilistic Time Series Imputation](https://arxiv.org/abs/2107.03502)"; specifically, using a variation of the 10% missing healthcare dataset described in the paper.
+While the test set is identical to the one in CSDI (because I used [the paper's code](https://github.com/ermongroup/CSDI)), I changed the training/validation split to 95%/5% and I used an online strategy to generate missing values for each training sample.
+Specifically, *every time* a training sample was encountered, I randomly selected 10% of the observed values to serve as the missing values.
+
+Like the DEformer, the input for DEformer-CSDI consists of a mix of identity feature vectors and identity/value feature vectors.
+The difference in this case is that DEformer-CSDI is not learning the joint distribution, so only the identity feature vectors are included for the missing values and the attention mask is now full instead of lower triangular (i.e., every input can attend to every other input).
+Identity was encoded as *f*(*t*, *k*) = [*t*, embed(*k*)] where *t* and *k* are the time and feature indices, respectively, for a data point.
+One interesting difference between DEformer-CSDI and CSDI is that DEformer-CSDI simply ignores missing values that are not being predicted, while CSDI "fills in" missing values with zeros to fix the size of the input.
+
+With no hyperparameter tuning, DEformer-CSDI achieves a mean absolute error of 0.219 on the 10% missing healthcare dataset compared to 0.217 for CSDI (see Table 3 in the paper).
+Notably, DEformer-CSDI vastly outperforms the flattened Transformer baseline discussed in Appendix F, which achieved a mean absolute error of 0.383 (see Table 7).
+
+```bash
+#!/usr/bin/env bash
+
+cd ${DEFORMER_PROJECT_DIR}
+nohup python3 train_deformer_csdi.py > csdi.log &
+```
