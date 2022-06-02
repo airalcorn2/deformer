@@ -176,7 +176,7 @@ The difference in this case is that DEformer-CSDI is not learning the joint dist
 Identity was encoded as *f*(*t*, *k*) = [*t*, embed(*k*)] where *t* and *k* are the time and feature indices, respectively, for a data point.
 One interesting difference between DEformer-CSDI and CSDI is that DEformer-CSDI simply ignores missing values that are not being predicted, while CSDI "fills in" missing values with zeros to fix the size of the input.
 
-With no hyperparameter tuning, DEformer-CSDI achieves a mean absolute error of 0.219 on the 10% missing healthcare dataset compared to 0.216 for CSDI (see Table 3 in the paper).
+With no hyperparameter tuning, DEformer-CSDI achieves a mean absolute error of 0.216 on the 10% missing healthcare dataset compared to 0.217 for CSDI (see Table 3 in the paper).
 Notably, DEformer-CSDI vastly outperforms the flattened Transformer baseline discussed in Appendix F, which achieved a mean absolute error of 0.383 (see Table 7).
 
 ```bash
